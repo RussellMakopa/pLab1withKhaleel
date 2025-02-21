@@ -33,3 +33,18 @@ def is_valid_url(url):
     )
     return re.match(regex, url)
 
+def shorten_url(long_url):
+    if not is_valid_url(long_url):
+        return "Invalid URL: Please enter a valid URL"
+    
+    data = load_data()
+
+    for short_id, url in data.items():
+        if url == long_url:
+            return BASE_URL + short_id
+    
+    short_id = generate_short_id()
+    while short_id in data:
+        short_id = generate_short_id()
+        
+

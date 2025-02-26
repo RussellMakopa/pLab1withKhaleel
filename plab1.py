@@ -27,9 +27,10 @@ def generate_short_id(length=8):
 
 def is_valid_url(url):
     regex = re.compile(
-    r'^(https://)?'
-    r'([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}'
-    r'(:[0-9]{1,5})?'
+        r'^(https?://)?' 
+        r'([a-zA-Z0-9.-]+)\.'  
+        r'([a-zA-Z]{2,})' 
+        r'(/\S*)?$' 
     )
     return re.match(regex, url)
 
@@ -46,5 +47,36 @@ def shorten_url(long_url):
     short_id = generate_short_id()
     while short_id in data:
         short_id = generate_short_id()
+
+def get_original_url(short_url):
+    data = load_data()
+    short_id = short_url.split("/")[-1]
+    return data.get(short_id, "URL not found")
+
+def count_urls():
+    data = load_data()
+    return len(data)
+
+
+def main():
+    while True:
+        choice = int (input("Enter your choice: "))
+
+        if choice == 1:
+            long_url = input ("Enter the full URL: ")
+            print("The short URL", shorten_url(long_url))
+        elif choice == 2:
+            short_url = input("Enter the shortened URL: ")
+            print("Original URL", get_original_url(short_url))
+        elif choice == 3:
+            print("Total URLs stored: ", count_urls())
+        elif choice == 4:
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    main()
+
         
 
